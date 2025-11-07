@@ -27,8 +27,6 @@ else
         ".gitignore"
         "design-doc-ServiceNow-inventory-agent.md"
         "GEMINI.md"
-        "logs.json"
-        "README.md"
         "reset.sh"
     )
     
@@ -87,20 +85,9 @@ echo "The PATH is: $PATH"
 
 # Delete all the existing prompts
 echo ""
-read -p "Do you want to preload the prompt? **WARNING**: This will delete ALL your Gemini CLI prompt history. (y/n) " answer
-if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-    echo "Deleting the prompt history and preloading for the demo."
-    rm -rf ~/.gemini/tmp/*
-    gemini -y "hi"
-    for FOLDER_ID in $(ls -F ~/.gemini/tmp | grep "/$" | grep -v "bin/" | tr -d /); do
-        cp "$BASE_DIR/logs.json" ~/.gemini/tmp/$FOLDER_ID/logs.json
-    done
-    echo "Prompt history preloaded successfully"
-else
-    echo "Will not preload the prompts."
-fi
-
-cd gemini-cli-create-agent-demo
+echo "Deleting the prompt history and preloading for the demo."
+rm -rf ~/.gemini/tmp/*
+echo "Prompt history deleted."
 
 echo ""
 echo "========================================="
