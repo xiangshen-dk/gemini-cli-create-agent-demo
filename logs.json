@@ -1,0 +1,16 @@
+[
+  {
+    "sessionId": "SESSION_ID",
+    "messageId": 0,
+    "type": "user",
+    "message": "Please deploy this agent.",
+    "timestamp": "2025-09-28T04:14:41.497Z"
+  },
+  {
+    "sessionId": "SESSION_ID",
+    "messageId": 1,
+    "type": "user",
+    "message": "I would like to build an inventory agent that follows this design doc: design-doc-ServiceNow-inventory-agent.md Can you create a plan?",
+    "timestamp": "2025-09-28T04:15:31.952Z"
+  }
+]
