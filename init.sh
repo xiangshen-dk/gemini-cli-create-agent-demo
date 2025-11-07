@@ -100,6 +100,8 @@ else
     echo "Will not preload the prompts."
 fi
 
+cd gemini-cli-create-agent-demo
+
 echo ""
 echo "========================================="
 echo "Setup completed successfully!"
