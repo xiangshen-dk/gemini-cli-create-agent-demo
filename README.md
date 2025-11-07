@@ -5,8 +5,8 @@ This demo is designed to be run exclusively in Google Cloud Shell.
 ## Common Setup Steps
 
 1. Configure your gcloud by running `gcloud auth login`
-2. Clone this demo repo: `git clone https://github.com/dekwan/gemini-cli-pollux-demo`
-3. Create a `.env` in the `gemini-cli-pollux-demo` folder that has these environment variables:
+2. Clone this demo repo: `git clone https://github.com/xiangshen-dk/gemini-cli-create-agent-demo`
+3. Create a `.env` in the `gemini-cli-create-agent-demo` folder that has these environment variables:
 
     ```
     GEMINI_MODEL=gemini-2.5-flash
@@ -18,14 +18,14 @@ This demo is designed to be run exclusively in Google Cloud Shell.
     SERVICENOW_PASSWORD=secret-service_now_password
     ```
 4. You can inspect the design doc `design-doc-ServiceNow-inventory-agent.md` in your editor.
-5. Run the `init.sh` file in `gemini-cli-pollux-demo`: `./init.sh`
+5. Run the `init.sh` file in `gemini-cli-create-agent-demo`: `./init.sh`
     * The init.sh will ask you if you want to preload the prompt. If you answer y, it will delete the prompt history for ALL your Gemini CLI instances.
 
 ## Setup in Google Cloud Shell
 
 Google Cloud Shell comes with `gcloud` and `gemini` pre-installed and authenticated. After completing the [Common Setup Steps](#common-setup-steps), follow these steps:
 
-1. Run gemini from the `gemini-cli-pollux-demo` folder.
+1. Run gemini from the `gemini-cli-create-agent-demo` folder.
 
 ## Prompts
 
@@ -35,4 +35,4 @@ Google Cloud Shell comes with `gcloud` and `gemini` pre-installed and authentica
 
 ## Reset demo
 
-1. In `gemini-cli-pollux-demo`, run the reset script: `./reset.sh`
+1. In `gemini-cli-create-agent-demo`, run the reset script: `./reset.sh`

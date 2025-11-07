@@ -11,10 +11,10 @@ if [ -d ".git" ]; then
     echo "Running from local repository: $BASE_DIR"
 else
     # Running via curl, need to download files
-    INSTALL_DIR="$HOME/gemini-cli-pollux-demo"
-    REPO_RAW_URL="https://raw.githubusercontent.com/xiangshen-dk/gemini-cli-pollux-demo/main"
+    INSTALL_DIR="$HOME/gemini-cli-create-agent-demo"
+    REPO_RAW_URL="https://raw.githubusercontent.com/xiangshen-dk/gemini-cli-create-agent-demo/main"
     
-    echo "Setting up gemini-cli-pollux-demo in $INSTALL_DIR..."
+    echo "Setting up gemini-cli-create-agent-demo in $INSTALL_DIR..."
     
     # Create installation directory
     mkdir -p "$INSTALL_DIR"
