@@ -75,6 +75,31 @@ if [ ! -f "$BASE_DIR/.env" ]; then
     exit 1
 fi
 
+# Update GOOGLE_CLOUD_PROJECT in .env file
+echo ""
+echo "Configuring GOOGLE_CLOUD_PROJECT..."
+if [ -n "$GOOGLE_CLOUD_PROJECT" ]; then
+    echo "Using GOOGLE_CLOUD_PROJECT from environment: $GOOGLE_CLOUD_PROJECT"
+    PROJECT_ID="$GOOGLE_CLOUD_PROJECT"
+else
+    echo "GOOGLE_CLOUD_PROJECT environment variable is not set."
+    read -p "Please enter your Google Cloud Project ID: " PROJECT_ID
+    if [ -z "$PROJECT_ID" ]; then
+        echo "Error: Project ID cannot be empty."
+        exit 1
+    fi
+fi
+
+# Update the .env file with the project ID
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    sed -i '' "s/^GOOGLE_CLOUD_PROJECT=.*/GOOGLE_CLOUD_PROJECT=$PROJECT_ID/" "$BASE_DIR/.env"
+else
+    # Linux
+    sed -i "s/^GOOGLE_CLOUD_PROJECT=.*/GOOGLE_CLOUD_PROJECT=$PROJECT_ID/" "$BASE_DIR/.env"
+fi
+echo "GOOGLE_CLOUD_PROJECT updated in .env file."
+
 # Remove all of the files that were added
 echo "Cleaning up files that were added..."
 rm -rf "$BASE_DIR/$INVENTORY_AGENT_DIR"
