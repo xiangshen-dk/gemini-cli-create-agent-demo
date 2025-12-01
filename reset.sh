@@ -16,7 +16,7 @@ rm -rf servicenow_inventory_agent
 # rm -rf $BASE_DIR/$CLI_WORKSPACE_REPO_DIR/workspace-mcp-server/token.json
 
 # Delete all the existing prompts
-read -p "Do you want to preload the prompt? **WARNING**: This will delete ALL your Gemini CLI prompt history. (y/n) " answer
+read -p "Do you want to delete the prompt history? **WARNING**: This will delete ALL your Gemini CLI prompt history. (y/n) " answer
 if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
     echo "Deleting the prompt history and preloading for the demo."
     rm -rf ~/.gemini/tmp/*
