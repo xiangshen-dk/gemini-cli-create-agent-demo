@@ -68,6 +68,21 @@ else
     exit 1
 fi
 
+# Update Gemini CLI to latest version
+echo ""
+echo "Updating Gemini CLI to latest version..."
+if ! command -v npm &> /dev/null; then
+    echo "Error: npm is not installed. Please install Node.js and npm first."
+    exit 1
+fi
+
+if npm install -g @google/gemini-cli@latest; then
+    echo "Gemini CLI updated successfully"
+else
+    echo "Error: Failed to update Gemini CLI"
+    exit 1
+fi
+
 # Check if the .env file exists
 echo ""
 if [ ! -f "$BASE_DIR/.env" ]; then
@@ -99,6 +114,32 @@ else
     sed -i "s/^GOOGLE_CLOUD_PROJECT=.*/GOOGLE_CLOUD_PROJECT=$PROJECT_ID/" "$BASE_DIR/.env"
 fi
 echo "GOOGLE_CLOUD_PROJECT updated in .env file."
+
+# Grant Secret Manager access to Vertex AI Reasoning Engine Service Agent
+echo ""
+echo "Granting Secret Manager access to Vertex AI Reasoning Engine Service Agent..."
+
+# Get the project number from the project ID
+PROJECT_NUMBER=$(gcloud projects describe "$PROJECT_ID" --format="value(projectNumber)")
+
+if [ -z "$PROJECT_NUMBER" ]; then
+    echo "Error: Failed to get project number for project $PROJECT_ID"
+    exit 1
+fi
+
+# Construct the Vertex AI Reasoning Engine Service Agent email
+RE_SERVICE_AGENT="service-${PROJECT_NUMBER}@gcp-sa-aiplatform-re.iam.gserviceaccount.com"
+
+echo "Adding Secret Manager Secret Accessor role to $RE_SERVICE_AGENT..."
+if gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+    --member="serviceAccount:$RE_SERVICE_AGENT" \
+    --role="roles/secretmanager.secretAccessor" \
+    --quiet; then
+    echo "Secret Manager access granted successfully"
+else
+    echo "Error: Failed to grant Secret Manager access"
+    exit 1
+fi
 
 # Remove all of the files that were added
 echo "Cleaning up files that were added..."
