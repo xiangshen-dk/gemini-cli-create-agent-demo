@@ -115,9 +115,9 @@ else
 fi
 echo "GOOGLE_CLOUD_PROJECT updated in .env file."
 
-# Grant Secret Manager access to Vertex AI Reasoning Engine Service Agent
+# Grant Secret Manager access to Vertex AI Service Agents
 echo ""
-echo "Granting Secret Manager access to Vertex AI Reasoning Engine Service Agent..."
+echo "Granting Secret Manager access to Vertex AI Service Agents..."
 
 # Get the project number from the project ID
 PROJECT_NUMBER=$(gcloud projects describe "$PROJECT_ID" --format="value(projectNumber)")
@@ -135,11 +135,27 @@ if gcloud projects add-iam-policy-binding "$PROJECT_ID" \
     --member="serviceAccount:$RE_SERVICE_AGENT" \
     --role="roles/secretmanager.secretAccessor" \
     --quiet; then
-    echo "Secret Manager access granted successfully"
+    echo "Secret Manager access granted to Reasoning Engine Service Agent"
 else
-    echo "Error: Failed to grant Secret Manager access"
+    echo "Error: Failed to grant Secret Manager access to Reasoning Engine Service Agent"
     exit 1
 fi
+
+# Construct the Vertex AI Service Agent email
+AI_SERVICE_AGENT="service-${PROJECT_NUMBER}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+
+echo "Adding Secret Manager Secret Accessor role to $AI_SERVICE_AGENT..."
+if gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+    --member="serviceAccount:$AI_SERVICE_AGENT" \
+    --role="roles/secretmanager.secretAccessor" \
+    --quiet; then
+    echo "Secret Manager access granted to Vertex AI Service Agent"
+else
+    echo "Error: Failed to grant Secret Manager access to Vertex AI Service Agent"
+    exit 1
+fi
+
+echo "Secret Manager access granted successfully to all Vertex AI Service Agents"
 
 # Remove all of the files that were added
 echo "Cleaning up files that were added..."
