@@ -68,18 +68,17 @@ else
     exit 1
 fi
 
-# Update Gemini CLI to latest version
+# Install Antigravity CLI
 echo ""
-echo "Updating Gemini CLI to latest version..."
-if ! command -v npm &> /dev/null; then
-    echo "Error: npm is not installed. Please install Node.js and npm first."
-    exit 1
+echo "Installing Antigravity CLI..."
+if ! command -v agy &> /dev/null; then
+    curl -fsSL https://antigravity.google/cli/install.sh | bash
+    export PATH="$HOME/.local/bin:$PATH"
 fi
-
-if npm install -g @google/gemini-cli@latest; then
-    echo "Gemini CLI updated successfully"
+if command -v agy &> /dev/null; then
+    echo "Antigravity CLI installed successfully"
 else
-    echo "Error: Failed to update Gemini CLI"
+    echo "Error: Failed to install Antigravity CLI"
     exit 1
 fi
 
@@ -114,6 +113,38 @@ else
     sed -i "s/^GOOGLE_CLOUD_PROJECT=.*/GOOGLE_CLOUD_PROJECT=$PROJECT_ID/" "$BASE_DIR/.env"
 fi
 echo "GOOGLE_CLOUD_PROJECT updated in .env file."
+
+# Configure Vertex AI as the default authentication method
+echo ""
+echo "Configuring Vertex AI authentication..."
+
+# Set the active Google Cloud project
+echo "Setting active Google Cloud project to $PROJECT_ID..."
+gcloud config set project "$PROJECT_ID"
+
+# Authenticate with Application Default Credentials (ADC)
+echo ""
+echo "Authenticating with Google Cloud Application Default Credentials (ADC)..."
+echo "A browser window will open for you to authenticate."
+gcloud auth application-default login
+
+# Verify authentication
+echo ""
+echo "Verifying authentication..."
+gcloud auth list
+
+# Ensure GOOGLE_GENAI_USE_ENTERPRISE is set in .env
+if grep -q "^GOOGLE_GENAI_USE_ENTERPRISE=" "$BASE_DIR/.env"; then
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i '' "s/^GOOGLE_GENAI_USE_ENTERPRISE=.*/GOOGLE_GENAI_USE_ENTERPRISE=TRUE/" "$BASE_DIR/.env"
+    else
+        sed -i "s/^GOOGLE_GENAI_USE_ENTERPRISE=.*/GOOGLE_GENAI_USE_ENTERPRISE=TRUE/" "$BASE_DIR/.env"
+    fi
+else
+    echo "GOOGLE_GENAI_USE_ENTERPRISE=TRUE" >> "$BASE_DIR/.env"
+fi
+echo "GOOGLE_GENAI_USE_ENTERPRISE=TRUE set in .env file."
+echo "Vertex AI authentication configured successfully."
 
 # Grant Secret Manager access to Vertex AI Service Agents
 echo ""
@@ -161,14 +192,14 @@ echo "Secret Manager access granted successfully to all Vertex AI Service Agents
 echo "Cleaning up files that were added..."
 rm -rf "$BASE_DIR/$INVENTORY_AGENT_DIR"
 
-# Export the path for adk
-export PATH=$BASE_DIR:$PATH
+# Export the path for adk and agy
+export PATH="$HOME/.local/bin:$BASE_DIR:$PATH"
 echo "The PATH is: $PATH"
 
 # Delete all the existing prompts
 echo ""
 echo "Deleting the prompt history and preloading for the demo."
-rm -rf ~/.gemini/tmp/*
+rm -rf ~/.gemini/antigravity-ide/brain/*
 echo "Prompt history deleted."
 
 echo ""
@@ -176,3 +207,8 @@ echo "========================================="
 echo "Setup completed successfully!"
 echo "Installation directory: $BASE_DIR"
 echo "========================================="
+
+# Verify Antigravity CLI initialization
+echo ""
+echo "Verifying Antigravity CLI setup..."
+agy inspect

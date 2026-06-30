@@ -9,10 +9,10 @@ This demo is designed to be run exclusively in Google Cloud Shell.
 3. Create a `.env` in the `gemini-cli-create-agent-demo` folder that has these environment variables:
 
     ```
-    GEMINI_MODEL=gemini-2.5-flash
+    GEMINI_MODEL=gemini-3.5-flash
     GOOGLE_GENAI_USE_VERTEXAI=1
     GOOGLE_CLOUD_PROJECT=adk-agent-gemini-cli-1482
-    GOOGLE_CLOUD_LOCATION=us-central1
+    GOOGLE_CLOUD_LOCATION=global
     SERVICENOW_INSTANCE=https://ven04789.service-now.com
     SERVICENOW_USERNAME=inventory_user
     SERVICENOW_PASSWORD=secret-service_now_password

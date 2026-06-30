@@ -138,7 +138,7 @@ Required environment variables:
 - `SERVICENOW_PASSWORD`: API password
 - `GOOGLE_CLOUD_PROJECT`: GCP project ID
 - `GOOGLE_CLOUD_LOCATION`: GCP region (e.g., us-central1)
-- `GEMINI_MODEL`: Gemini model name (e.g., gemini-2.5-flash)
+- `GEMINI_MODEL`: Gemini model name (e.g., gemini-3.5-flash)
 - `GOOGLE_GENAI_USE_VERTEXAI`: Set to 1 for Vertex AI
 
 ## **6. Security**
