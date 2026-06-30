@@ -12,7 +12,7 @@ if [ -d ".git" ]; then
 else
     # Running via curl, need to download files
     INSTALL_DIR="$HOME/gemini-cli-create-agent-demo"
-    REPO_RAW_URL="https://raw.githubusercontent.com/xiangshen-dk/gemini-cli-create-agent-demo/main"
+    REPO_RAW_URL="https://raw.githubusercontent.com/xiangshen-dk/gemini-cli-create-agent-demo/agy"
     
     echo "Setting up gemini-cli-create-agent-demo in $INSTALL_DIR..."
     

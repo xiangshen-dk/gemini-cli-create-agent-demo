@@ -5,7 +5,7 @@ This demo is designed to be run exclusively in Google Cloud Shell.
 ## Common Setup Steps
 
 1. Configure your gcloud by running `gcloud auth login`
-2. Clone this demo repo: `git clone https://github.com/xiangshen-dk/gemini-cli-create-agent-demo`
+2. Clone this demo repo: `git clone -b agy https://github.com/xiangshen-dk/gemini-cli-create-agent-demo`
 3. Create a `.env` in the `gemini-cli-create-agent-demo` folder that has these environment variables:
 
     ```
