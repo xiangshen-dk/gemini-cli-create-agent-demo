@@ -75,10 +75,13 @@ category: Optional[str] = None
 
 Name the agent variable `root_agent`, which is required by ADK.
 
+**Deployment-Safe Coding:** **Never** instantiate gRPC clients, GCP service clients (e.g., `secretmanager.SecretManagerServiceClient()`), connectors, or open resources at module / global scope in `agent.py`. The Agent Runtime packages the module with `cloudpickle`, and these objects hold open connections and internal state that cannot be serialized. Wrap all client creation inside functions, methods, or class constructors (e.g., `ServiceNowConnector.__init__`) so they are evaluated lazily at runtime.
+
 ## requirements.txt
-Add the requirements:
+Add the requirements.
+**CRITICAL:** Use `google-adk[a2a]` (not plain `google-adk`). The `[a2a]` extra ensures the full set of Agent Runtime / Agent Engine dependencies (including the `a2a` protocol module) are installed in the deployment container.
 ```
-google-adk
+google-adk[a2a]
 python-dotenv
 requests
 pydantic
@@ -89,7 +92,7 @@ google-cloud-aiplatform
 # Agent rules
 
 - Always present the plan to the user before asking for confirmation to proceed with implementation.
-- Use the variable names `SERVICENOW_INSTANCE`, `SERVICENOW_USERNAME`, and `SERVICENOW_PASSWORD` for the ServiceNow url, username, and passowrd. These will already be set for you. If the value of the env var `SERVICENOW_PASSWORD` has the prefix `secret-`, use its value as the secreate name and get its real value from Secret Manager 
+- Use the variable names `SERVICENOW_INSTANCE`, `SERVICENOW_USERNAME`, and `SERVICENOW_PASSWORD` for the ServiceNow url, username, and password. These will already be set for you. If the value of the env var `SERVICENOW_PASSWORD` has the prefix `secret-`, use its value as the secret name and get its real value from Secret Manager. Implement a fallback in the secret-resolution helper: first attempt lookup using the full env var value. If a `NotFound` error occurs, strip the `secret-` prefix (i.e., `value[7:]`) and retry the lookup.
 - Do not display sensitive information like passwords on the screen.
 
 # Self-Correction Protocols
